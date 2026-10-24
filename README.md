@@ -4,103 +4,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Amour & Humour - Pour Sarah ❤️</title>
-    
-    <!-- Google Fonts & Tailwind CSS -->
+    <title>Quiz d'Amour Ultimatum 💕</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@400;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Canvas Confetti Library pour l'effet féerique final -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        romantic: {
+                            50: '#fff5f7',
+                            100: '#ffe3ec',
+                            200: '#fccadc',
+                            300: '#f8a5c2',
+                            400: '#f368e0',
+                            500: '#ff4d4d',
+                            600: '#e03657',
+                            700: '#b81e3d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                        cursive: ['Dancing Script', 'cursive'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-short': 'bounceShort 0.5s ease infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        bounceShort: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        /* Polices personnalisées */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffb3c6 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .font-handwriting {
-            font-family: 'Dancing Script', cursive;
-        }
-
-        .font-outfit {
-            font-family: 'Outfit', sans-serif;
-        }
-
-        /* Glassmorphism effet pour la carte principale */
+        /* Glassmorphism Styles */
         .glass-card {
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 50px rgba(235, 77, 120, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(224, 54, 87, 0.15);
         }
 
-        /* Canvas d'arrière-plan pour la pluie de cœurs douce */
-        #hearts-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
+        /* Floating background hearts */
+        .bg-heart {
+            position: absolute;
+            opacity: 0.25;
+            animation: floatHeart 6s linear infinite;
             z-index: 0;
+            pointer-events: none;
         }
 
-        /* Animations personnalisées */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(3deg); }
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
         }
 
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
+        /* Transition animations for screens */
+        .screen-enter {
+            animation: fadeInScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.6); opacity: 0; }
-            80% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
-        .animate-pop-in {
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-
-        .animate-shake {
-            animation: shake 0.4s ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); }
-        }
-
-        .pulse-glow {
-            animation: pulseGlow 2s infinite;
-        }
-
-        /* Boutons personnalisés avec reflets */
+        /* Custom buttons styling */
         .btn-romantic {
-            background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, #ff4e50, #f9d423);
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .btn-romantic:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(201, 24, 74, 0.4);
+            box-shadow: 0 12px 25px rgba(255, 117, 140, 0.6);
         }
 
         .btn-romantic:active {
@@ -108,426 +127,454 @@
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #ff758f;
-            color: #c9184a;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            box-shadow: 0 8px 20px rgba(161, 196, 253, 0.4);
             transition: all 0.3s ease;
         }
 
         .btn-secondary:hover {
-            background: #ffe5ec;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
         }
 
-        /* Barre de progression avec dégradé */
-        .progress-bar-fill {
-            background: linear-gradient(90deg, #ff758f 0%, #ff4d6d 50%, #c9184a 100%);
-            transition: width 0.5s ease-in-out;
+        /* Escaping button smooth repositioning */
+        #btn-no {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 relative">
+<body class="font-sans text-gray-800 flex items-center justify-center min-h-screen p-4 relative">
 
-    <!-- Canvas pour l'arrière-plan interactif de cœurs -->
-    <canvas id="hearts-canvas"></canvas>
+    <!-- Container for floating background hearts -->
+    <div id="hearts-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
 
-    <!-- Conteneur principal -->
-    <main class="w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 relative z-10 my-8 transition-all duration-500">
-        
-        <!-- En-tête / Barre de progression (masquée sur l'écran final) -->
-        <header id="quiz-header" class="mb-6">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-bold tracking-wider text-rose-500 uppercase">Quiz Spécial Ammar & Sarah</span>
-                <span id="step-indicator" class="text-xs font-semibold px-3 py-1 rounded-full bg-rose-100 text-rose-600">Question 1 / 4</span>
+    <!-- Main Container -->
+    <main class="w-full max-w-lg z-10">
+
+        <!-- ÉCRAN D'ACCUEIL -->
+        <div id="screen-welcome" class="glass-card rounded-3xl p-8 text-center screen-enter relative">
+            <div class="inline-block p-4 rounded-full bg-pink-100 text-pink-500 mb-4 animate-float">
+                <i class="fa-solid fa-heart-pulse text-5xl"></i>
             </div>
-            <div class="w-full h-3 bg-rose-100 rounded-full overflow-hidden p-0.5 border border-rose-200">
-                <div id="progress-bar" class="h-full rounded-full progress-bar-fill w-1/4"></div>
-            </div>
-        </header>
+            <h1 class="font-display font-bold text-3xl md:text-4xl text-romantic-700 mb-3 leading-tight">
+                Le Test d'Amour Ultimatum 💕
+            </h1>
+            <p class="text-gray-600 mb-8 text-sm md:text-base">
+                Un mini-quiz très sérieux (ou pas) pour mesurer ta complicité avec Ammar. Es-tu prête, Sarah ? ✨
+            </p>
+            <button onclick="startQuiz()" class="btn-romantic text-white font-bold text-lg px-8 py-4 rounded-2xl w-full flex items-center justify-center gap-3 group">
+                <span>Commencer le test</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
 
-        <!-- ZONE DE JEU / QUESTIONS -->
-        <div id="quiz-body" class="relative">
+        <!-- CONTAINER DES QUESTIONS (masqué par défaut) -->
+        <div id="quiz-container" class="hidden">
+
+            <!-- BARRE DE PROGRESSION -->
+            <div class="mb-6 bg-white/50 backdrop-blur-md rounded-full p-2 border border-white/60 shadow-sm">
+                <div class="flex justify-between text-xs font-semibold text-romantic-700 px-3 mb-1">
+                    <span>Progression</span>
+                    <span id="progress-text">Question 1 / 4</span>
+                </div>
+                <div class="w-full bg-pink-100 rounded-full h-3 overflow-hidden">
+                    <div id="progress-bar" class="bg-gradient-to-r from-pink-400 to-romantic-600 h-full rounded-full transition-all duration-500" style="width: 25%"></div>
+                </div>
+            </div>
 
             <!-- QUESTION 1 -->
-            <section id="step-1" class="space-y-6 transition-all duration-300">
-                <div class="text-center space-y-2">
-                    <span class="text-4xl inline-block animate-float">🥊 🆚 🦍</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 font-outfit">Qui gagne en 1vs1 ?</h2>
-                    <p class="text-sm text-gray-500">Réfléchis bien avant de répondre...</p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                    <button onclick="handleQ1Choice('gorille')" class="btn-secondary font-semibold py-4 px-6 rounded-2xl shadow-sm text-lg flex items-center justify-center gap-2">
-                        Un gorille 🦍
+            <div id="q1" class="glass-card rounded-3xl p-6 md:p-8 text-center screen-enter">
+                <span class="inline-block px-3 py-1 bg-pink-100 text-romantic-600 rounded-full text-xs font-bold mb-3">Question 1</span>
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+                    Qui gagne en 1vs1 ? 🥊
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="answerQ1('gorille')" class="btn-secondary text-gray-800 font-semibold p-5 rounded-2xl flex flex-col items-center gap-2 group">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">🦍</span>
+                        <span>Un gorille</span>
                     </button>
-                    <button onclick="handleQ1Choice('ammar')" class="btn-secondary font-semibold py-4 px-6 rounded-2xl shadow-sm text-lg flex items-center justify-center gap-2">
-                        Ammar 🥊
-                    </button>
-                </div>
-
-                <!-- Message d'erreur / Indice Q1 -->
-                <div id="q1-feedback" class="hidden text-center p-4 bg-amber-50 border border-amber-200 text-amber-700 rounded-2xl text-sm font-medium animate-pop-in">
-                    Raté ! Ni l'un ni l'autre... 😏 <br>
-                    <span class="text-xs text-amber-600">Un indice : ça se mange et ça donne de la force ! 🍫</span>
-                </div>
-
-                <!-- Bouton Surprise Q1 -->
-                <div id="q1-surprise-container" class="hidden text-center pt-2">
-                    <button onclick="validateStep(1)" class="btn-romantic pulse-glow text-white font-bold py-4 px-8 rounded-2xl text-xl w-full flex items-center justify-center gap-3 animate-pop-in">
-                        ✨ Un mars 🍫 ✨
+                    <button onclick="answerQ1('ammar')" class="btn-romantic text-white font-bold p-5 rounded-2xl flex flex-col items-center gap-2 group">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">💪</span>
+                        <span>Ammar</span>
                     </button>
                 </div>
-            </section>
+            </div>
 
             <!-- QUESTION 2 -->
-            <section id="step-2" class="hidden space-y-6 transition-all duration-300">
-                <div class="text-center space-y-2">
-                    <span class="text-4xl inline-block animate-float">👑 ✨</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 font-outfit">Quelle est la plus belle femme au monde ?</h2>
-                    <p class="text-sm text-gray-500">Une question objective et indiscutable :</p>
-                </div>
-
-                <div class="pt-4">
-                    <button onclick="validateStep(2)" class="btn-romantic pulse-glow text-white font-bold py-5 px-8 rounded-2xl text-2xl w-full flex items-center justify-center gap-3 shadow-lg hover:scale-105 transition-transform">
-                        Sarah ✨👑
+            <div id="q2" class="glass-card rounded-3xl p-6 md:p-8 text-center screen-enter hidden">
+                <span class="inline-block px-3 py-1 bg-pink-100 text-romantic-600 rounded-full text-xs font-bold mb-3">Question 2</span>
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+                    Quelle est la plus belle femme au monde ? ✨
+                </h2>
+                <div class="flex justify-center">
+                    <button onclick="answerQ2()" class="btn-romantic text-white font-bold text-xl p-8 rounded-3xl w-full flex flex-col items-center gap-3 animate-pulse-slow">
+                        <span class="text-5xl">👑</span>
+                        <span class="text-2xl">Sarah</span>
+                        <span class="text-xs font-normal opacity-90">(La seule et unique option possible !)</span>
                     </button>
                 </div>
-            </section>
+            </div>
 
             <!-- QUESTION 3 -->
-            <section id="step-3" class="hidden space-y-6 transition-all duration-300">
-                <div class="text-center space-y-2">
-                    <span class="text-4xl inline-block animate-float">🌸 🤡</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 font-outfit">Quelle est la femme la plus douce ?</h2>
-                    <p class="text-sm text-gray-500">Fais le bon choix...</p>
-                </div>
-
-                <div class="grid grid-cols-1 gap-4 pt-2">
-                    <button id="q3-wrong-btn" onclick="handleQ3Wrong()" class="btn-secondary font-semibold py-4 px-6 rounded-2xl text-lg flex items-center justify-center gap-2">
-                        Les ex d'Ammar 🤡
+            <div id="q3" class="glass-card rounded-3xl p-6 md:p-8 text-center screen-enter hidden">
+                <span class="inline-block px-3 py-1 bg-pink-100 text-romantic-600 rounded-full text-xs font-bold mb-3">Question 3</span>
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+                    Quelle est la femme la plus douce ? 🧸
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="answerQ3('gf')" class="btn-secondary text-gray-800 font-semibold p-5 rounded-2xl flex flex-col items-center gap-2 group">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">🍬</span>
+                        <span>La gf d'Ammar</span>
                     </button>
-                    <button onclick="validateStep(3)" class="btn-romantic text-white font-bold py-4 px-6 rounded-2xl text-xl flex items-center justify-center gap-2 shadow-md">
-                        Sarah 🌸
+                    <button onclick="answerQ3('sarah')" class="btn-romantic text-white font-bold p-5 rounded-2xl flex flex-col items-center gap-2 group">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">🌸</span>
+                        <span>Sarah</span>
                     </button>
                 </div>
-
-                <!-- Feedback taquin Q3 -->
-                <div id="q3-feedback" class="hidden text-center p-4 bg-rose-100 border border-rose-300 text-rose-700 rounded-2xl text-sm font-semibold animate-pop-in">
-                    Euh... tu es sûre de toi là ? 😂<br>
-                    <span class="text-xs font-normal">Reconsidère immédiatement ton choix mademoiselle !</span>
-                </div>
-            </section>
+            </div>
 
             <!-- QUESTION 4 -->
-            <section id="step-4" class="hidden space-y-6 transition-all duration-300">
-                <div class="text-center space-y-2">
-                    <span class="text-4xl inline-block animate-float">💖 🤔</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 font-outfit">Est-ce qu'Ammar il t'aime ?</h2>
-                    <p class="text-sm text-gray-500">Essaie de dire non pour voir...</p>
+            <div id="q4" class="glass-card rounded-3xl p-6 md:p-8 text-center screen-enter hidden relative overflow-hidden min-h-[320px] flex flex-col justify-between">
+                <div>
+                    <span class="inline-block px-3 py-1 bg-pink-100 text-romantic-600 rounded-full text-xs font-bold mb-3">Question Finale</span>
+                    <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+                        Est-ce qu'Ammar t'aime ? ❤️
+                    </h2>
                 </div>
 
-                <div class="relative min-h-[160px] flex items-center justify-center pt-2">
-                    <!-- Bouton OUI (Immanquable) -->
-                    <button onclick="finishQuiz()" class="btn-romantic pulse-glow text-white font-bold py-5 px-10 rounded-2xl text-2xl shadow-xl hover:scale-110 z-10 transition-transform">
-                        Oui ❤️
+                <div id="q4-buttons-container" class="flex flex-col md:flex-row items-center justify-center gap-4 my-auto relative w-full h-32">
+                    <button id="btn-yes" onclick="answerQ4()" class="btn-romantic text-white font-bold text-xl px-8 py-4 rounded-2xl w-full md:w-1/2 z-10 shadow-lg">
+                        Oui ! 😍
                     </button>
-
-                    <!-- Bouton NON (Qui s'enfuit) -->
-                    <button id="btn-no" onmouseenter="evadeButton()" onclick="evadeButton()" class="btn-secondary font-semibold py-3 px-6 rounded-2xl text-base absolute z-20 transition-all duration-200">
-                        Non ❌
+                    <button id="btn-no" onmouseover="escapeButton()" onclick="escapeButton()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold text-lg px-8 py-4 rounded-2xl w-full md:w-1/2 z-20">
+                        Non 🙈
                     </button>
                 </div>
-            </section>
-
-            <!-- ÉCRAN DE VICTOIRE / FIN -->
-            <section id="step-final" class="hidden space-y-6 text-center animate-pop-in">
-                <div class="space-y-3">
-                    <span class="text-6xl inline-block animate-bounce">💖 🎉 ✨</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-rose-600 font-outfit">Félicitations Sarah !</h2>
-                    <p class="text-base text-gray-600 font-medium">Tu as réussi le test haut la main !</p>
-                </div>
-
-                <!-- Carte Déclaration de Ammar -->
-                <div class="bg-white/80 p-6 rounded-2xl border-2 border-rose-200 shadow-inner space-y-4 text-left">
-                    <div class="flex items-center gap-3 border-b border-rose-100 pb-3">
-                        <div class="w-10 h-10 rounded-full bg-rose-500 flex items-center justify-center text-white text-xl font-bold">
-                            A
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-800">Message d'Ammar</h3>
-                            <p class="text-xs text-rose-500 font-medium">Certifié 100% sincère et amoureux</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 italic leading-relaxed text-sm sm:text-base">
-                        « Ma chère Sarah, tu es la personne la plus incroyable, la plus magnifique et la plus douce au monde. Ce petit jeu était juste une excuse pour te faire sourire et te rappeler à quel point je t'aime fort chaque jour ! »
-                    </p>
-                    <div class="text-right font-handwriting text-2xl text-rose-600 font-bold">
-                        Pour toujours, Ammar ❤️
-                    </div>
-                </div>
-
-                <button onclick="restartQuiz()" class="btn-secondary text-rose-600 font-semibold py-3 px-8 rounded-full text-sm inline-flex items-center gap-2 hover:bg-rose-50">
-                    🔄 Recommencer le test
-                </button>
-            </section>
+                
+                <p id="escape-hint" class="text-xs text-pink-500 italic font-medium h-4"></p>
+            </div>
 
         </div>
+
+        <!-- ÉCRAN DE FIN / VICTOIRE -->
+        <div id="screen-end" class="glass-card rounded-3xl p-8 text-center screen-enter hidden relative overflow-hidden">
+            <div class="inline-block p-4 rounded-full bg-pink-100 text-romantic-600 mb-4 animate-bounce-short">
+                <i class="fa-solid fa-trophy text-5xl"></i>
+            </div>
+            <h1 class="font-cursive text-4xl md:text-5xl font-bold text-romantic-600 mb-2">
+                Score Parfait : 1000/10 ! 🎉
+            </h1>
+            <p class="font-display font-semibold text-xl text-gray-700 mb-6">
+                Félicitations mon amour !
+            </p>
+
+            <div class="bg-white/70 backdrop-blur-sm p-6 rounded-2xl border border-pink-200 mb-8 text-left space-y-3 shadow-inner">
+                <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                    Tu as réussi le test ultime avec brio (bon, d'accord... les choix étaient légèrement orientés ! 😉).
+                </p>
+                <p class="text-gray-800 font-medium text-sm md:text-base leading-relaxed">
+                    Sache qu'<strong>Ammar t'aime plus que tout au monde</strong>. Tu es la plus belle, la plus douce, et la personne la plus précieuse à ses yeux. ❤️✨
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="restartQuiz()" class="btn-secondary text-gray-700 font-bold py-3.5 px-6 rounded-2xl flex-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Rejouer</span>
+                </button>
+                <button onclick="sendLove()" class="btn-romantic text-white font-bold py-3.5 px-6 rounded-2xl flex-1 flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Envoyer un bisou 💋</span>
+                </button>
+            </div>
+        </div>
+
     </main>
 
+    <!-- MODAL / POP-UP POUR LES MESSAGES HUMORISTIQUES -->
+    <div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="modal-content" class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full text-center shadow-2xl transform scale-90 transition-transform duration-300">
+            <div id="modal-icon" class="text-5xl mb-4"></div>
+            <h3 id="modal-title" class="font-display text-xl font-bold text-gray-800 mb-2"></h3>
+            <p id="modal-text" class="text-gray-600 text-sm mb-6 leading-relaxed"></p>
+            <button id="modal-btn" onclick="closeModal()" class="btn-romantic text-white font-bold px-6 py-3 rounded-xl w-full">
+                D'accord ! 😉
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        /* ==========================================
-           LOGIQUE ET ÉTATS DU QUIZ
-           ========================================== */
-        let currentStep = 1;
-        const totalSteps = 4;
+        // Audio Synthesizer via Web Audio API (Pas besoin de fichiers externes)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Mise à jour de la barre de progression
-        function updateProgress() {
-            const progressBar = document.getElementById('progress-bar');
-            const stepIndicator = document.getElementById('step-indicator');
-            const percentage = (currentStep / totalSteps) * 100;
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
 
-            if (progressBar) progressBar.style.width = `${percentage}%`;
-            if (stepIndicator) stepIndicator.textContent = `Question ${currentStep} / ${totalSteps}`;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'pop') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(180, now + 0.15);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'win') {
+                const notes = [261.63, 329.63, 392.00, 523.25];
+                notes.forEach((freq, index) => {
+                    const noteOsc = audioCtx.createOscillator();
+                    const noteGain = audioCtx.createGain();
+                    noteOsc.connect(noteGain);
+                    noteGain.connect(audioCtx.destination);
+
+                    noteOsc.type = 'sine';
+                    noteOsc.frequency.setValueAtTime(freq, now + index * 0.1);
+                    noteGain.gain.setValueAtTime(0.2, now + index * 0.1);
+                    noteGain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.1 + 0.3);
+
+                    noteOsc.start(now + index * 0.1);
+                    noteOsc.stop(now + index * 0.1 + 0.3);
+                });
+            }
         }
 
-        // Passer à la question suivante
-        function validateStep(stepNumber) {
-            // Animation explosion de cœurs locale
-            triggerMiniConfetti();
+        // Background Hearts Generator
+        function createBackgroundHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartIcons = ['❤️', '💖', '💕', '💗', '✨', '🌸'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDuration = `${4 + Math.random() * 6}s`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.fontSize = `${16 + Math.random() * 20}px`;
+                container.appendChild(heart);
+            }
+        }
+        createBackgroundHearts();
 
-            const currentElement = document.getElementById(`step-${stepNumber}`);
-            currentElement.classList.add('opacity-0', 'scale-95');
+        // Modal Management
+        let modalCallback = null;
+
+        function showModal(icon, title, text, callback = null) {
+            document.getElementById('modal-icon').innerText = icon;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            modalCallback = callback;
+
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-90');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            playSound('pop');
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-90');
 
             setTimeout(() => {
-                currentElement.classList.add('hidden');
-                currentElement.classList.remove('opacity-0', 'scale-95');
-
-                currentStep++;
-                const nextElement = document.getElementById(`step-${currentStep}`);
-                if (nextElement) {
-                    nextElement.classList.remove('hidden');
-                    nextElement.classList.add('animate-pop-in');
-                }
-
-                updateProgress();
-
-                // Si on arrive à la Q4, positionner le bouton Non proprement au départ
-                if (currentStep === 4) {
-                    resetNoButtonPosition();
+                modal.classList.add('hidden');
+                if (modalCallback) {
+                    modalCallback();
+                    modalCallback = null;
                 }
             }, 300);
         }
 
-        /* Q1 : Gestion Gorille vs Ammar -> Apparition du Mars */
-        function handleQ1Choice(choice) {
-            const feedback = document.getElementById('q1-feedback');
-            const surprise = document.getElementById('q1-surprise-container');
+        // Quiz State Management
+        let currentStep = 0;
 
-            if (feedback && surprise) {
-                feedback.classList.remove('hidden');
-                surprise.classList.remove('hidden');
-                
-                // Animation de secousse légère sur la carte
-                const card = document.querySelector('main');
-                card.classList.add('animate-shake');
-                setTimeout(() => card.classList.remove('animate-shake'), 400);
-            }
+        function updateProgress(step) {
+            const percent = (step / 4) * 100;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-text').innerText = `Question ${step} / 4`;
         }
 
-        /* Q3 : Gestion des Ex d'Ammar */
-        function handleQ3Wrong() {
-            const feedback = document.getElementById('q3-feedback');
-            const wrongBtn = document.getElementById('q3-wrong-btn');
-
-            if (feedback && wrongBtn) {
-                feedback.classList.remove('hidden');
-                wrongBtn.classList.add('animate-shake');
-                setTimeout(() => wrongBtn.classList.remove('animate-shake'), 400);
-            }
-        }
-
-        /* Q4 : Bouton "NON" qui s'enfuit */
-        function evadeButton() {
-            const btnNo = document.getElementById('btn-no');
-            if (!btnNo) return;
-
-            // Calcul de coordonnées aléatoires à l'intérieur de la carte ou de la fenêtre
-            const mainCard = document.querySelector('main');
-            const rect = mainCard.getBoundingClientRect();
-
-            // Générer de nouvelles positions relatives
-            const maxX = rect.width - btnNo.offsetWidth - 30;
-            const maxY = rect.height - btnNo.offsetHeight - 30;
-
-            const newX = Math.random() * maxX - (rect.width / 2) + 50;
-            const newY = Math.random() * maxY - (rect.height / 2) + 50;
-
-            btnNo.style.transform = `translate(${newX}px, ${newY}px) scale(0.9)`;
-        }
-
-        function resetNoButtonPosition() {
-            const btnNo = document.getElementById('btn-no');
-            if (btnNo) {
-                btnNo.style.top = '70%';
-                btnNo.style.right = '10%';
-                btnNo.style.transform = 'translate(0, 0)';
-            }
-        }
-
-        /* ÉCRAN DE FIN / VICTOIRE */
-        function finishQuiz() {
-            document.getElementById('quiz-header').classList.add('hidden');
-            document.getElementById('step-4').classList.add('hidden');
-
-            const finalElement = document.getElementById('step-final');
-            finalElement.classList.remove('hidden');
-
-            // Pluie torrentielle de confetti/cœurs
-            triggerGrandFireworks();
-        }
-
-        // Recommencer le quiz
-        function restartQuiz() {
+        function startQuiz() {
+            playSound('pop');
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
             currentStep = 1;
-            
-            // Masquer la fin et réafficher l'en-tête
-            document.getElementById('step-final').classList.add('hidden');
-            document.getElementById('quiz-header').classList.remove('hidden');
-
-            // Cacher les feedbacks Q1 et Q3
-            document.getElementById('q1-feedback').classList.add('hidden');
-            document.getElementById('q1-surprise-container').classList.add('hidden');
-            document.getElementById('q3-feedback').classList.add('hidden');
-
-            // Réinitialiser les sections
-            for (let i = 2; i <= 4; i++) {
-                document.getElementById(`step-${i}`).classList.add('hidden');
-            }
-            document.getElementById('step-1').classList.remove('hidden');
-
-            updateProgress();
+            updateProgress(currentStep);
         }
 
-        /* ==========================================
-           EFFETS CONFETTI & CŒURS (canvas-confetti)
-           ========================================== */
-        function triggerMiniConfetti() {
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 25,
-                    spread: 60,
-                    origin: { y: 0.7 },
-                    colors: ['#ff4d6d', '#ff758f', '#ffb3c6']
+        function goToNextQuestion(nextQ) {
+            const currentEl = document.getElementById(`q${currentStep}`);
+            const nextEl = document.getElementById(`q${nextQ}`);
+
+            currentEl.classList.add('hidden');
+            nextEl.classList.remove('hidden');
+            
+            // Re-trigger CSS animation
+            nextEl.classList.remove('screen-enter');
+            void nextEl.offsetWidth; 
+            nextEl.classList.add('screen-enter');
+
+            currentStep = nextQ;
+            updateProgress(currentStep);
+        }
+
+        // Question Logic
+        function answerQ1(choice) {
+            if (choice === 'gorille') {
+                playSound('wrong');
+                showModal('😤', 'Attends quoi ?! ', 'Tu doutes sérieusement du Prime Ammar ?! Il a le pouvoir de l\'amour avec lui, le gorille n\'a aucune chance ! Réessaie 🥊');
+            } else {
+                playSound('pop');
+                confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } });
+                showModal('🥊❤️', 'Victoire par K.O !', 'Évidemment ! Ammar gagne au 1er round avec le pouvoir de l\'amour !', () => {
+                    goToNextQuestion(2);
                 });
             }
         }
 
-        function triggerGrandFireworks() {
-            if (typeof confetti !== 'function') return;
+        function answerQ2() {
+            playSound('pop');
+            confetti({
+                particleCount: 80,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#ff4d4d', '#ff758c', '#ffffff']
+            });
+            showModal('😍✨', 'Évidence Absolue !', 'Score de beauté : 1000/10 ! Il n\'y a même pas de débat possible.', () => {
+                goToNextQuestion(3);
+            });
+        }
 
-            const duration = 5 * 1000;
+        function answerQ3(choice) {
+            if (choice === 'gf') {
+                playSound('pop');
+                showModal('😂💕', 'Aha piégée !', 'Mais... la gf d\'Ammar C\'EST Sarah ! Tu t\'es piégée toute seule ! Tu es donc officiellement la plus douce 🧸', () => {
+                    goToNextQuestion(4);
+                });
+            } else {
+                playSound('pop');
+                confetti({ particleCount: 50, spread: 70, origin: { y: 0.7 } });
+                showModal('🧸🌸', 'Absolument !', 'Une douceur infinie au quotidien. Mauvaise réponse impossible ici !', () => {
+                    goToNextQuestion(4);
+                });
+            }
+        }
+
+        // Question 4 Escaping Button Logic
+        let escapeCount = 0;
+        const escapeHints = [
+            "Oups, le bouton a glissé ! 😜",
+            "Non non non, impossible de cliquer ici ! 😂",
+            "Tu insistes ? Tu n'y arriveras pas ! 🏃‍♂️",
+            "Allez, clique sur Oui ! ❤️"
+        ];
+
+        function escapeButton() {
+            playSound('wrong');
+            const btnNo = document.getElementById('btn-no');
+            const container = document.getElementById('q4-buttons-container');
+            const hint = document.getElementById('escape-hint');
+
+            // Get random offsets relative to screen width/height
+            const containerRect = container.getBoundingClientRect();
+            const xMax = containerRect.width / 2 - 40;
+            const yMax = 60;
+
+            const randomX = (Math.random() - 0.5) * xMax * 2;
+            const randomY = (Math.random() - 0.5) * yMax * 2;
+
+            btnNo.style.transform = `translate(${randomX}px, ${randomY}px) scale(${0.9})`;
+
+            hint.innerText = escapeHints[escapeCount % escapeHints.length];
+            escapeCount++;
+        }
+
+        function answerQ4() {
+            playSound('win');
+            
+            // Big confetti explosion
+            const duration = 3 * 1000;
             const animationEnd = Date.now() + duration;
 
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
-                const particleCount = 50 * (timeLeft / duration);
-
-                // Tirer des deux côtés
+            (function frame() {
                 confetti({
-                    particleCount,
-                    startVelocity: 30,
-                    spread: 360,
-                    ticks: 60,
-                    origin: { x: Math.random(), y: Math.random() - 0.2 },
-                    colors: ['#ff4d6d', '#c9184a', '#ff8fa3', '#fff0f3', '#ff0054']
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4d4d', '#ff758c', '#ffffff', '#ffd700']
                 });
-            }, 250);
-        }
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4d4d', '#ff758c', '#ffffff', '#ffd700']
+                });
 
-        /* ==========================================
-           CANVAS ANIMATION - PLUIE DE CŒURS DOUCE (BACKGROUND)
-           ========================================== */
-        const canvas = document.getElementById('hearts-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let hearts = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Heart {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100;
-                this.size = Math.random() * 12 + 8;
-                this.speedY = Math.random() * 1.5 + 0.5;
-                this.speedX = Math.sin(Math.random() * Math.PI) * 0.5;
-                this.opacity = Math.random() * 0.5 + 0.3;
-                this.color = `hsla(${Math.random() * 20 + 340}, 100%, 75%, ${this.opacity})`;
-            }
-
-            update() {
-                this.y -= this.speedY;
-                this.x += Math.sin(this.y * 0.01) * 0.5;
-
-                if (this.y < -20) {
-                    this.reset();
+                if (Date.now() < animationEnd) {
+                    requestAnimationFrame(frame);
                 }
-            }
+            })();
 
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.beginPath();
-                ctx.fillStyle = this.color;
-
-                // Dessiner une forme de cœur simple
-                const topCurveHeight = this.size * 0.3;
-                ctx.moveTo(0, topCurveHeight);
-                ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
-                ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
-                ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
-                ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
-
-                ctx.closePath();
-                ctx.fill();
-                ctx.restore();
-            }
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('screen-end').classList.remove('hidden');
         }
 
-        // Créer les cœurs au démarrage
-        for (let i = 0; i < 25; i++) {
-            hearts.push(new Heart());
+        function restartQuiz() {
+            playSound('pop');
+            
+            // Reset Escaping Button
+            const btnNo = document.getElementById('btn-no');
+            btnNo.style.transform = 'none';
+            escapeCount = 0;
+            document.getElementById('escape-hint').innerText = '';
+
+            // Reset screens
+            document.getElementById('screen-end').classList.add('hidden');
+            document.getElementById('q1').classList.remove('hidden');
+            document.getElementById('q2').classList.add('hidden');
+            document.getElementById('q3').classList.add('hidden');
+            document.getElementById('q4').classList.add('hidden');
+
+            document.getElementById('screen-welcome').classList.remove('hidden');
         }
 
-        function animateHearts() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hearts.forEach(heart => {
-                heart.update();
-                heart.draw();
+        function sendLove() {
+            playSound('win');
+            confetti({
+                particleCount: 100,
+                spread: 100,
+                origin: { y: 0.5 }
             });
-            requestAnimationFrame(animateHearts);
+            showModal('💋❤️', 'Bisou envoyé !', 'Ammar a bien reçu ton bisou virtuel ! Merci d\'être la personne fantastique que tu es au quotidien. 🥰');
         }
-
-        window.onload = function() {
-            animateHearts();
-            updateProgress();
-        };
     </script>
 </body>
 </html>
